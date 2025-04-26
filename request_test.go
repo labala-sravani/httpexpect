@@ -2201,6 +2201,12 @@ func TestValidationFailures(t *testing.T) {
 		req.Expect() // calls setupRedirect indirectly
 		req.chain.assertFailed(t)
 	})
+
+	t.Run("WithContext", func(t *testing.T) {
+		req := NewRequest(config, "METHOD", "/")
+		req.WithContext(nil)
+		req.chain.assertFailed(t)
+	})
 }
 
 func TestWithRetryDelay(t *testing.T) {
@@ -3021,3 +3027,17 @@ func TestRequestRetry(t *testing.T) {
 		assert.Equal(t, 1, callCount)
 	})
 }
+
+
+// WithQueryObject - 1 - go-query library
+// WithForm - 1 - mime/multipart library
+// WithFormField - 1 - mime/multipart library
+
+// withPath - 2
+// withFile - 2
+// roundTrip - 1
+// encodeRequest - 1
+// encodeWebsocketRequest - 3
+// sendWebsocketRequest - 2
+// setBody - 1
+// mustWrite - 1 - iowriter library
